@@ -4,7 +4,7 @@ const app=express()
 const path=require('path')
 const campground = require('./models/campground')
 const methodoverride=require('method-override')
-const { findByIdAndDelete } = require('./models/campground')
+const campground = require('./models/campground')
 
 app.use(methodoverride('_method'))
 app.use(express.urlencoded({extended:true}))
