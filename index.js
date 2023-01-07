@@ -4,12 +4,13 @@ const app=express()
 const path=require('path')
 const campground = require('./models/campground')
 const methodoverride=require('method-override')
-const campground = require('./models/campground')
+const ejsMate=require('ejs-mate')
 
 app.use(methodoverride('_method'))
 app.use(express.urlencoded({extended:true}))
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'/views'))
+app.engine('ejs',ejsMate)
 
 mongoose.connect('mongodb://localhost:27017/yelpCampDb', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
