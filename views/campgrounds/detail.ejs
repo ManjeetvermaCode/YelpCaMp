@@ -1,7 +1,11 @@
 <% layout('layouts/boilerplate') %> 
 
     <h1><%=camp.title %> </h1>
+    
     <h2><%= camp.location %> </h2>
+    <img src=<%= camp.image %>  alt="error">
+    <p><%= camp.description %> </p>
+    <h3>Price : <%= camp.price %> </h3>
     <p><a href="/camps/<%= camp._id %>/edit ">Edit Page</a></p>
     <div>
         <a href="/camps">All camps</a>

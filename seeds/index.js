@@ -18,10 +18,15 @@ const sample=(array)=>array[Math.floor(Math.random()*array.length)]
         await campground.deleteMany({});
         for(let i=0;i<50;i++){
             const randnum1000=Math.floor(Math.random() * 1000 + 1);
-
+            const price=Math.floor(Math.random()*20+10)
         let a=new campground({
             location:`${cities[randnum1000].city}, ${cities[randnum1000].state}`,
-            title:`${sample(descriptors)} ${sample(places)}`
+            title:`${sample(descriptors)} ${sample(places)}`,
+            image:'https://picsum.photos/200',
+            description:'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum aliquam ratione maiores fuga architecto facere ducimus corrupti odit accusamus mollitia labore veritatis necessitatibus deserunt quidem modi, enim facilis molestiae vel.Exercitationem eligendi nesciunt eveniet porro voluptatum recusandae deleniti doloribus nulla possimus, perspiciatis saepe illum delectus quibusdam animi atque? Necessitatibus accusamus vero cupiditate praesentium ipsam veritatis magnam cum natus illum. Amet?',
+            price:price
+
+
         })
         await a.save();
 
