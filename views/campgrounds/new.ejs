@@ -1,17 +1,39 @@
 <% layout('layouts/boilerplate') %> 
 
-    <h1>Create New Campground</h1>
-    <div>
-        <form action="/camps" method="post">
-            <div>
-                <label for="name">Enter Campground Name</label>
-                <input type="text" name="campground[title]" id="name">
-            </div>
-            <div>
-                <label for="loc">Enter Campground Location</label>
-                <input type="text" name="campground[location]" id="loc">
-            </div>
-            <button>submit</button>
-        </form>
+<div class="row">
+    <h1 class="text-center">Add Create New Campground</h1>
+    <div class="col-6 offset-3">
+        <div>
+            <form action="/camps" method="post">
+                <div class="mb-3">
+                    <label class="form-label" for="name">Enter Campground Name</label>
+                    <input class="form-control" type="text" name="campground[title]" id="name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="loc">Enter Campground Location</label>
+                    <input class="form-control" type="text" name="campground[location]" id="loc">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="p">Enter Campground Price</label>
+                    <input class="form-control" type="number" name="campground[price]" id="p">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="desc">Enter Campground Description</label>
+                    <textarea class="form-control" type="text" name="campground[description]" id="desc"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="img">Campground Url</label>
+                    <input class="form-control" type="text" name="campground[image]" id="img">
+                </div>
+                
+                <div class="mb-3">
+                    <button class="btn btn-danger">submit</button>
+
+                </div>
+            </form>
+        </div>
+        <a class="btn btn-primary mb-2" href="/camps">Back to all Camps</a>
     </div>
-    <a href="/camps">Back to all Camps</a>
+</div>
+
+    
