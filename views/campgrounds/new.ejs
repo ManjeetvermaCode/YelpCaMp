@@ -1,29 +1,44 @@
 <% layout('layouts/boilerplate') %> 
 
 <div class="row">
-    <h1 class="text-center">Add Create New Campground</h1>
+    <h1 class="text-center text-danger">Create New Campground</h1>
     <div class="col-6 offset-3">
         <div>
-            <form action="/camps" method="post">
+            <form action="/camps" method="post" novalidate class="validated-form">
                 <div class="mb-3">
                     <label class="form-label" for="name">Enter Campground Name</label>
-                    <input class="form-control" type="text" name="campground[title]" id="name">
+                    <input class="form-control" type="text" name="campground[title]" id="name" required>
+                    <div class="valid-feedback">
+                        Look's Good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="loc">Enter Campground Location</label>
-                    <input class="form-control" type="text" name="campground[location]" id="loc">
+                    <input class="form-control" type="text" name="campground[location]" id="loc" required>
+                    <div class="valid-feedback">
+                        Look's Good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="p">Enter Campground Price</label>
-                    <input class="form-control" type="number" name="campground[price]" id="p">
+                    <input class="form-control" type="number" name="campground[price]" id="p" required>
+                    <div class="valid-feedback">
+                        Look's Good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="desc">Enter Campground Description</label>
-                    <textarea class="form-control" type="text" name="campground[description]" id="desc"></textarea>
+                    <textarea class="form-control" type="text" name="campground[description]" id="desc" required></textarea>
+                    <div class="valid-feedback">
+                        Look's Good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="img">Campground Url</label>
-                    <input class="form-control" type="text" name="campground[image]" id="img">
+                    <input class="form-control" type="text" name="campground[image]" id="img" required>
+                    <div class="valid-feedback">
+                        Look's Good!
+                    </div>
                 </div>
                 
                 <div class="mb-3">
@@ -35,5 +50,25 @@
         <a class="btn btn-primary mb-2" href="/camps">Back to all Camps</a>
     </div>
 </div>
+<script>
+    (function () {
+        'use strict'
+      
+        var forms = document.querySelectorAll('.validated-form')
+      
+       
+        Array.from(forms)
+          .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+              if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+              }
+      
+              form.classList.add('was-validated')
+            }, false)
+          })
+      })()
+</script>
 
-    
+
