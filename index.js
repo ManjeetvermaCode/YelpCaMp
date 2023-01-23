@@ -7,10 +7,20 @@ const methodoverride=require('method-override')
 const ejsMate=require('ejs-mate')
 const wrapAsync=require('./utiliti/wrapAsync')
 const expressError = require('./utiliti/expressError')
-const { stat } = require('fs')
-const joi=require('joi')
-const { threadId } = require('worker_threads')
-const { title } = require('process')
+const {campgroundSchema}=require('./validationschema')
+
+
+const validatecampground=(req,res,next)=>{
+    
+        const {error}=campgroundSchema.validate(req.body)
+        if(error){
+            const msg=error.details.map(e=>e.message).join(',')
+            throw new expressError(msg,400)
+        }
+        else{
+            next()
+        }
+}
 
 app.use(methodoverride('_method'))
 app.use(express.urlencoded({extended:true}))
@@ -35,23 +45,9 @@ app.get('/camps',wrapAsync(async(req,res)=>{
 app.get('/camps/new',(req,res)=>{
     res.render('campgrounds/new')
 })
-app.post('/camps',wrapAsync(async(req,res)=>{
+app.post('/camps',validatecampground,wrapAsync(async(req,res)=>{
     //if(!req.body.campground) throw new expressError('invalid camp data',400)
-    const campgroundSchema=joi.object({
-    campground:joi.object({
-        title:joi.string().required(),
-        price:joi.number().required().min(0),
-        image:joi.string().required(),
-        description:joi.string().required(),
-        location:joi.string().required()
-     } )
-    }).required()
-    const {error}=campgroundSchema.validate(req.body)
-    if(error){
-        const msg=error.details.map(e=>e.message).join(',')
-        throw new expressError(msg,400)
-    }
-    console.log(error)
+    
         const c=new campground(req.body.campground)
         await c.save()
         res.redirect(`camps/${c._id}`)
@@ -70,7 +66,7 @@ app.get('/camps/:id/edit',wrapAsync(async(req,res)=>{
     res.render('campgrounds/edit',{camp})
 
 }))
-app.put('/camps/:id',wrapAsync(async(req,res)=>{
+app.put('/camps/:id',validatecampground,wrapAsync(async(req,res)=>{
     const {id}=req.params
     const c=await campground.findByIdAndUpdate(id,{...req.body.campground})//spread opr used for object to be expanded in places where zero or more key-value pairs (for object literals) are expected.
     res.redirect(`/camps/${c._id}`)
