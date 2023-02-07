@@ -3,16 +3,18 @@ const mongoose = require('mongoose')
 const app=express()
 const path=require('path')
 const campground = require('./models/campground')
+const review = require('./models/review')
 const methodoverride=require('method-override')
 const ejsMate=require('ejs-mate')
 const wrapAsync=require('./utiliti/wrapAsync')
 const expressError = require('./utiliti/expressError')
-const {campgroundSchema}=require('./validationschema')
+const {campgroundschema, reviewschema}=require('./validationschema')
 
 
-const validatecampground=(req,res,next)=>{
+
+const validatecampground=(req,res,next)=>{//defining express error middleware for campground.
     
-        const {error}=campgroundSchema.validate(req.body)
+        const {error}=campgroundschema.validate(req.body)
         if(error){
             const msg=error.details.map(e=>e.message).join(',')
             throw new expressError(msg,400)
@@ -20,6 +22,18 @@ const validatecampground=(req,res,next)=>{
         else{
             next()
         }
+}
+const validatereview=(req,res,next)=>{
+    const {error}=reviewschema.validate(req.body)
+    console.log(error)
+    if(error){
+        
+        const msg=error.details.map(e=>e.message).join(',')
+        throw new expressError(msg,400)
+    }
+    else{
+        next()
+    }
 }
 
 app.use(methodoverride('_method'))
@@ -51,10 +65,11 @@ app.post('/camps',validatecampground,wrapAsync(async(req,res)=>{
         const c=new campground(req.body.campground)
         await c.save()
         res.redirect(`camps/${c._id}`)
-    
-        
+
+
 
 }))
+
 app.get('/camps/:id',wrapAsync(async(req,res)=>{
     const camp=await campground.findById(req.params.id);
     res.render('campgrounds/detail',{camp})
@@ -78,6 +93,16 @@ app.delete('/camps/:id',wrapAsync(async(req,res)=>{
     await campground.findByIdAndDelete(id);
     res.redirect('/camps')
 
+}))
+
+app.post('/camps/:id/reviews',validatereview,wrapAsync(async(req,res)=>{
+    const {id}=req.params
+    const cg=await campground.findById(id)
+    const r=new review(req.body.review)
+    cg.review.push(r)
+   await cg.save()
+   await r.save()
+   res.redirect(`/camps/${id}`)
 }))
 
 
