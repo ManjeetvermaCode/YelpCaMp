@@ -21,6 +21,14 @@
               </form></p>
             </div>
           </div>
+          <h1>Reviews</h1>
+          <div class="mb-3">
+            <% for(let review of camp.review){ %>
+      
+            <p>Review :<%= review.body %> </p> 
+            <p>Rating :<%= review.rating %>/5 </p>
+            <% } %>  
+          </div>
           <h1>Add Review of CampGround</h1>
             <form action="/camps/<%=camp._id%>/reviews" method="post" class="mb-3 validated-form" novalidate><%#*added 'validation-form' class from layouts/boilerplate.js, used for disabiling html validation.  %>
               <div class="mb-3">

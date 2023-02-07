@@ -25,7 +25,6 @@ const validatecampground=(req,res,next)=>{//defining express error middleware fo
 }
 const validatereview=(req,res,next)=>{
     const {error}=reviewschema.validate(req.body)
-    console.log(error)
     if(error){
         
         const msg=error.details.map(e=>e.message).join(',')
@@ -71,7 +70,8 @@ app.post('/camps',validatecampground,wrapAsync(async(req,res)=>{
 }))
 
 app.get('/camps/:id',wrapAsync(async(req,res)=>{
-    const camp=await campground.findById(req.params.id);
+    const camp=await campground.findById(req.params.id).populate('review');
+    
     res.render('campgrounds/detail',{camp})
 
 }))
