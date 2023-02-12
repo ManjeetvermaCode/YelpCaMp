@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %> 
 
 <div class="row mb-3">
-    <div class="col-6 offset-3">
+    <div class="col-6">
         <div class="card" >
             <img src=<%= camp.image %> class="card-img-top" alt="...">
             <div class="card-body">
@@ -21,30 +21,40 @@
               </form></p>
             </div>
           </div>
-          <h1>Reviews</h1>
-          <div class="mb-3">
-            <% for(let review of camp.review){ %>
-      
-            <p>Review :<%= review.body %> </p> 
-            <p>Rating :<%= review.rating %>/5 </p>
-            <% } %>  
+          <div class="col-6">
+
           </div>
-          <h1>Add Review of CampGround</h1>
-            <form action="/camps/<%=camp._id%>/reviews" method="post" class="mb-3 validated-form" novalidate><%#*added 'validation-form' class from layouts/boilerplate.js, used for disabiling html validation.  %>
-              <div class="mb-3">
-                <label class="form-label" for="rating" class="form-label">Select Rating Point you want to give</label>
-                <input class="form-control" type="range" min="0" max="5" name="review[rating]" id="rating">
-              </div>
-             <div class="mb-3">
-              <label for="reviewbody" class="form-label">Review</label>
-              <textarea name="review[body]"  id="reviewbody" cols="30" rows="3" class="form-control" required></textarea>
-              <div class="valid-feedback">
-                Look's Good!
-            </div>
-             </div>
-             <button class="btn btn-success">Submit</button>
-            </form>
+          
          
+            
+    </div>
+    <div class="col-6">
+      <h1>Add Review of CampGround</h1>
+      <form action="/camps/<%=camp._id%>/reviews" method="post" class="mb-3 validated-form" novalidate><%#*added 'validation-form' class from layouts/boilerplate.js, used for disabiling html validation.  %>
+        <div class="mb-3">
+          <label class="form-label" for="rating" class="form-label">Select Rating Point you want to give</label>
+          <input class="form-control" type="range" min="0" max="5" name="review[rating]" id="rating">
+        </div>
+       <div class="mb-3">
+        <label for="reviewbody" class="form-label">Review</label>
+        <textarea name="review[body]"  id="reviewbody" cols="30" rows="3" class="form-control" required></textarea>
+        <div class="valid-feedback">
+          Look's Good!
+      </div>
+       </div>
+       <button class="btn btn-success">Submit</button>
+      </form>
+      <h1>Reviews</h1>
+      
+        <% for(let review of camp.review){ %>
+          <div class="mb-3 card">
+            <div class="card-body">
+              <h5 class="card-title">Review :<%= review.rating  %>/5 </h5> 
+              <p class="card-text">Rating :<%=review.body  %>/5 </p>
+            </div>
+       
+          </div>
+        <% } %>  
     </div>
     
 </div>
