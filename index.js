@@ -23,7 +23,7 @@ const validatecampground=(req,res,next)=>{//defining express error middleware fo
             next()
         }
 }
-const validatereview=(req,res,next)=>{
+const validatereview=(req,res,next)=>{//defining express error middleware for review.
     const {error}=reviewschema.validate(req.body)
     if(error){
         
@@ -103,6 +103,15 @@ app.post('/camps/:id/reviews',validatereview,wrapAsync(async(req,res)=>{
    await cg.save()
    await r.save()
    res.redirect(`/camps/${id}`)
+}))
+
+app.delete('/camps/:id/reviews/:reviewid',wrapAsync(async(req,res)=>{
+    const {id,reviewid}=req.params
+    
+    await review.findByIdAndDelete(reviewid);//1.here we are only deleting review individually,
+    await campground.findByIdAndUpdate(id,{$pull:{review:reviewid}})
+    res.redirect(`/camps/${id}`)
+
 }))
 
 

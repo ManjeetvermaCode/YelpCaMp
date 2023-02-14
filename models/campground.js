@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const { campgroundschema } = require('../validationschema');
 const review=require('./review')
 const Schema=mongoose.Schema;
 
@@ -15,5 +16,7 @@ const campgroundSchema=new Schema({
         }
     ]
 })
+
+
 
 module.exports=mongoose.model('campground1collections',campgroundSchema);
