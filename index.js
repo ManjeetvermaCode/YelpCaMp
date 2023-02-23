@@ -109,7 +109,7 @@ app.delete('/camps/:id/reviews/:reviewid',wrapAsync(async(req,res)=>{
     const {id,reviewid}=req.params
     
     await review.findByIdAndDelete(reviewid);//1.here we are only deleting review individually,
-    await campground.findByIdAndUpdate(id,{$pull:{review:reviewid}})
+    await campground.findByIdAndUpdate(id,{$pull:{review:reviewid}})//but we also want to delete [findByIdAndUpdate] the reference to review in array, which can couse problem in a big production app. 
     res.redirect(`/camps/${id}`)
 
 }))
