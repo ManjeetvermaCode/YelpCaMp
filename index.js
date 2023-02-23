@@ -18,8 +18,13 @@ app.use(express.urlencoded({extended:true}))
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'/views'))
 app.engine('ejs',ejsMate)
+app.use(express.static(path.join(__dirname,'public')))//must declare for serving static files
 
-mongoose.connect('mongodb://localhost:27017/yelpCampDb', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/yelpCampDb', { 
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+
+})
     .then(() => {
         console.log("MONGO CONNECTION OPEN!!!")
     })
