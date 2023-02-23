@@ -1,5 +1,5 @@
 const express=require('express')
-const router=express.Router()
+const router=express.Router({mergeParams:true})//express router cannot read the property of camp_id, becouse it is in index.js file, so we'll use 'mergeParams'
 
 const wrapAsync=require('../utiliti/wrapAsync')
 const expressError = require('../utiliti/expressError')
