@@ -8,6 +8,7 @@ const methodoverride=require('method-override')
 const ejsMate=require('ejs-mate')
 const expressError = require('./utiliti/expressError')
 const session=require('express-session')
+const flash=require('connect-flash')
 
 const camproutes=require('./routes/campgroundroutes')
 const reviewroutes=require('./routes/reviewroutes')
@@ -20,12 +21,14 @@ app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'/views'))
 app.engine('ejs',ejsMate)
 app.use(express.static(path.join(__dirname,'public')))//must declare for serving static files
+app.use(flash());
+
 const config={
     secret:'thisisagoddammsecret',
-    resave:false,
-    saveUninitialized:false,
+    resave:false,//to make session deprecation warning go away
+    saveUninitialized:false,//to make session deprecation warning go away
     Cookie:{
-        httpOnly:true,
+        httpOnly:true,//if this flag is applied cookies cannot be access by client side scripts making it more secure.
         expires:Date.now()+1000*60*60*24*7,
         maxage:1000*60*60*24*7
     }
@@ -42,6 +45,13 @@ mongoose.connect('mongodb://localhost:27017/yelpCampDb', {
     .catch(err => {
         console.log("Error, MONGO CONNECTION!!!!")
         console.log(err)
+})
+
+app.use((req,res,next)=>{
+    res.locals.message=req.flash('success')
+    res.locals.message=req.flash('del')
+    res.locals.message=req.flash('upd')
+    next()
 })
 
 app.use('/camps',camproutes)
