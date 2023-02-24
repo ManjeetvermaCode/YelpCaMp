@@ -38,13 +38,20 @@ router.post('/',validatecampground,wrapAsync(async(req,res)=>{
 
 router.get('/:id',wrapAsync(async(req,res)=>{
 const camp=await campground.findById(req.params.id).populate('review');
-
+if(!camp){
+    req.flash('error',"Campground Not Found")
+    return res.redirect('/camps')
+}
 res.render('campgrounds/detail',{camp})
 
 }))
 
 router.get('/:id/edit',wrapAsync(async(req,res)=>{
 const camp=await campground.findById(req.params.id);
+if(!camp){
+    req.flash('error',"Campground Not Found")
+    return res.redirect('/camps')
+}
 res.render('campgrounds/edit',{camp})
 
 }))

@@ -48,7 +48,8 @@ mongoose.connect('mongodb://localhost:27017/yelpCampDb', {
 })
 
 app.use((req,res,next)=>{
-    res.locals.message=req.flash('success')
+    res.locals.success=req.flash('success')
+    res.locals.error=req.flash('error')
     next()
 })
 
