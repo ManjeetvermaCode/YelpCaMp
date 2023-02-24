@@ -4,13 +4,14 @@ const app=express()
 const path=require('path')
 const campground = require('./models/campground')
 const review = require('./models/review')
-
 const methodoverride=require('method-override')
 const ejsMate=require('ejs-mate')
 const expressError = require('./utiliti/expressError')
+const session=require('express-session')
 
 const camproutes=require('./routes/campgroundroutes')
 const reviewroutes=require('./routes/reviewroutes')
+const { Cookie } = require('express-session')
 
 
 app.use(methodoverride('_method'))//becouse of this middleware, we did not imported methodoverride as these middlewares can be used throghout the application.
@@ -19,19 +20,29 @@ app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'/views'))
 app.engine('ejs',ejsMate)
 app.use(express.static(path.join(__dirname,'public')))//must declare for serving static files
+const config={
+    secret:'thisisagoddammsecret',
+    resave:false,
+    saveUninitialized:false,
+    Cookie:{
+        httpOnly:true,
+        expires:Date.now()+1000*60*60*24*7,
+        maxage:1000*60*60*24*7
+    }
+}
+app.use(session(config))
 
 mongoose.connect('mongodb://localhost:27017/yelpCampDb', { 
     useNewUrlParser: true,
     useUnifiedTopology: true,
-
-})
+    })
     .then(() => {
         console.log("MONGO CONNECTION OPEN!!!")
     })
     .catch(err => {
         console.log("Error, MONGO CONNECTION!!!!")
         console.log(err)
-    })
+})
 
 app.use('/camps',camproutes)
 app.use('/camps/:id/reviews',reviewroutes)
