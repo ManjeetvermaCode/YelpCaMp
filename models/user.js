@@ -1,6 +1,6 @@
 const mongoose=require('mongoose')
 const Schema=mongoose.Schema
-const passportlocalmongoose=require('passportlocalmongoose')
+const passportlocalmongoose=require('passport-local-mongoose')
 
 
 const userSchema=new Schema({
@@ -11,6 +11,6 @@ const userSchema=new Schema({
     }
 })
 
-userSchema.plugin('passportlocalmongoose')//passportlocalmongoose will add a username,hash and salt field to the username, the hash password and the salt value. It also provides other methods.
+userSchema.plugin(passportlocalmongoose)//passportlocalmongoose will add a username,hash and salt field to the username, the hash password and the salt value. It also provides other methods.
 
 module.exports=mongoose.model('User',userSchema)
