@@ -9,10 +9,13 @@ const ejsMate=require('ejs-mate')
 const expressError = require('./utiliti/expressError')
 const session=require('express-session')
 const flash=require('connect-flash')
+const passport=require('passport')//allow us to implement multiple stratergy for authenticaiton
+const localstratergy=require('passport-local')
+const user=require('./models/user')
 
 const camproutes=require('./routes/campgroundroutes')
 const reviewroutes=require('./routes/reviewroutes')
-const { Cookie } = require('express-session')
+const userroutes=require('./routes/userroutes')
 
 
 app.use(methodoverride('_method'))//becouse of this middleware, we did not imported methodoverride as these middlewares can be used throghout the application.
@@ -34,6 +37,12 @@ const config={
     }
 }
 app.use(session(config))
+app.use(passport.initialize())
+app.use(passport.session())//using for persistent user login, other wise a user will have to login on every request
+passport.use(new localstratergy(user.authenticate()))//authenticate function is provided by passwordlocalmongoose from userSchema. We are using local stratergy
+
+passport.serializeUser(user.serializeUser())//serialization is basically means how do we store a user in the session
+passport.deserializeUser(user.deserializeUser())//and vice versa. Both functions are provided by passportlocalmongoose
 
 mongoose.connect('mongodb://localhost:27017/yelpCampDb', { 
     useNewUrlParser: true,
@@ -53,6 +62,7 @@ app.use((req,res,next)=>{
     next()
 })
 
+app.use('/',userroutes)
 app.use('/camps',camproutes)
 app.use('/camps/:id/reviews',reviewroutes)
 
