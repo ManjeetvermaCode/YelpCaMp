@@ -48,7 +48,7 @@ res.render('campgrounds/detail',{camp})
 
 router.get('/:id/edit',wrapAsync(async(req,res)=>{
 const camp=await campground.findById(req.params.id);
-if(!camp){
+if(!camp){//if campground not found we will flash msg and redirect to respective page.
     req.flash('error',"Campground Not Found")
     return res.redirect('/camps')
 }
