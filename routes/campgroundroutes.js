@@ -7,9 +7,9 @@ const expressError = require('../utiliti/expressError')
 const {campgroundschema}=require('../validationschema')
 
 const campground = require('../models/campground')
+const {isLoggedIn}=require('../middleware')
 
 const validatecampground=(req,res,next)=>{//defining express error middleware for campground.
-    
     const {error}=campgroundschema.validate(req.body)
     if(error){
         const msg=error.details.map(e=>e.message).join(',')
@@ -26,9 +26,11 @@ router.get('/',wrapAsync(async(req,res)=>{
 
 
 }))
-router.get('/new',(req,res)=>{
+
+router.get('/new',isLoggedIn,(req,res)=>{
 res.render('campgrounds/new')
 })
+
 router.post('/',validatecampground,wrapAsync(async(req,res)=>{
     const c=new campground(req.body.campground)
     await c.save()
@@ -36,7 +38,7 @@ router.post('/',validatecampground,wrapAsync(async(req,res)=>{
     res.redirect(`camps/${c._id}`)
 }))
 
-router.get('/:id',wrapAsync(async(req,res)=>{
+router.get('/:id',isLoggedIn,wrapAsync(async(req,res)=>{
 const camp=await campground.findById(req.params.id).populate('review');
 if(!camp){
     req.flash('error',"Campground Not Found")
