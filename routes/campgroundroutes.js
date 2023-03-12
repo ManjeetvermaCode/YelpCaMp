@@ -31,7 +31,7 @@ router.get('/new',isLoggedIn,(req,res)=>{
 res.render('campgrounds/new')
 })
 
-router.post('/',validatecampground,wrapAsync(async(req,res)=>{
+router.post('/',validatecampground,isLoggedIn,wrapAsync(async(req,res)=>{
     const c=new campground(req.body.campground)
     await c.save()
     req.flash('success',"Campground has been created successfully!!")
@@ -55,22 +55,19 @@ if(!camp){//if campground not found we will flash msg and redirect to respective
     return res.redirect('/camps')
 }
 res.render('campgrounds/edit',{camp})
-
 }))
-router.put('/:id',validatecampground,wrapAsync(async(req,res)=>{
+
+router.put('/:id',isLoggedIn,validatecampground,wrapAsync(async(req,res)=>{
 const {id}=req.params
 const c=await campground.findByIdAndUpdate(id,{...req.body.campground})
 req.flash('success',"Campground has been updated successfully!!")
-res.redirect(`/camps/${c._id}`)
+res.redirect(`/camps/${c._id}`)}))
 
-
-}))
-router.delete('/:id',wrapAsync(async(req,res)=>{
+router.delete('/:id',isLoggedIn,wrapAsync(async(req,res)=>{
 const {id}=req.params;
 await campground.findByIdAndDelete(id);
 req.flash('success','Campground has been deleted successfully!!')
 res.redirect('/camps')
-
 }))
 
 module.exports=router
