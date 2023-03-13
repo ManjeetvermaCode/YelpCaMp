@@ -11,9 +11,12 @@
         <a href="/camps/new" class="nav-link">Create New Campground</a>
        </div>
         <div class="navbar-nav ms-auto">
+          <% if(!loggeduser){ %>
           <a href="/login" class="nav-link">LogIn</a>
           <a href="/register" class="nav-link">Register</a>
+          <% }else{ %>
           <a href="/logout" class="nav-link">LogOut</a>
+          <% } %>
         </div>
       </div>
     </div>
