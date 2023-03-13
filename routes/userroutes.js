@@ -13,7 +13,6 @@ router.post('/register',Wrapasync(async(req,res)=>{
         const {username,email,password}=req.body
         const registeruser=new user({username,email})//creating new user model
        const result= await user.register(registeruser,password)//register method will create salt and hash the password for us.`
-        console.log(result)
         req.flash('success','Welcome to YelpCamp!')
         res.redirect('/camps')
     }catch(e){
