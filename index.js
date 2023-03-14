@@ -56,7 +56,9 @@ mongoose.connect('mongodb://localhost:27017/yelpCampDb', {
         console.log(err)
 })
 
-app.use((req,res,next)=>{
+app.use((req,res,next)=>{//declaring global variables, in a middleware remember it will run for all requests.
+    res.locals.loggeduser=req.user//(req.user)This object contains information about the authenticated user, such as their username, email, or any other relevant data
+   // req.session.returnTo;
     res.locals.success=req.flash('success')
     res.locals.error=req.flash('error')
     next()
