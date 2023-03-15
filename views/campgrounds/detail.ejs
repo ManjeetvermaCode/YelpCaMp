@@ -15,13 +15,21 @@
 
               
             </ul>
-            <div class="card-body">
-              <a class="btn btn-info" href="/camps/<%= camp._id %>/edit " class="card-link">Edit page</a>
+            <div class="card-body ">
+              <% if(loggeduser && camp.author === loggeduser._id){ %>
+              <div class="d-inline">
+                <a class="btn btn-info" href="/camps/<%= camp._id %>/edit " class="card-link">Edit page</a>
+                <p><form action="/camps/<%= camp._id %>?_method=delete " method="post">
+                      <button class="btn btn-info">Delete</button>
+                </form></p>
+              </div>
+              <% } %>
               <a class="btn btn-info" href="/camps" class="card-link">All campgrounds</a>
-              <p><form action="/camps/<%= camp._id %>?_method=delete " method="post">
-                    <button class="btn btn-info">Delete</button>
-              </form></p>
-            </div>
+
+              </div>
+
+             
+
           </div>
           <div class="col-6">
 
