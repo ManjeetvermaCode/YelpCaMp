@@ -23,6 +23,7 @@ const sample=(array)=>array[Math.floor(Math.random()*array.length)]
             location:`${cities[randnum1000].city}, ${cities[randnum1000].state}`,
             title:`${sample(descriptors)} ${sample(places)}`,
             image:'https://picsum.photos/200',
+            author:'640de313403114a636f14ee9',
             description:'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum aliquam ratione maiores fuga architecto facere ducimus corrupti odit accusamus mollitia labore veritatis necessitatibus deserunt quidem modi, enim facilis molestiae vel.Exercitationem eligendi nesciunt eveniet porro voluptatum recusandae deleniti doloribus nulla possimus, perspiciatis saepe illum delectus quibusdam animi atque? Necessitatibus accusamus vero cupiditate praesentium ipsam veritatis magnam cum natus illum. Amet?',
             price:price
 

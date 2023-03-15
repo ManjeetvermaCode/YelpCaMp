@@ -32,7 +32,6 @@ router.get('/login',(req,res)=>{
 router.post('/login',passport.authenticate('local',{failureFlash:true,failureRedirect:'/login'}),(req,res)=>{//passport.authenticate is an middleware, it will authenticate automatically and will handler if error occur else it will move 'next';
     req.flash('success',"You are Welcome")
     const url=req.session.returnTo || '/camps'
-
     res.redirect(url)
 })
 
