@@ -1,6 +1,7 @@
 const mongoose=require('mongoose');
 const { campgroundschema } = require('../validationschema');
-const review=require('./review')
+const review=require('./review');
+const user = require('./user');
 const Schema=mongoose.Schema;
 
 const campgroundSchema=new Schema({
@@ -9,6 +10,10 @@ const campgroundSchema=new Schema({
     price:Number,
     description:String,
     location:String,
+    author:{
+        type:Schema.Types.ObjectId,
+        ref:user
+    },//adding author field
     review:[
         {
             type:Schema.Types.ObjectId,
