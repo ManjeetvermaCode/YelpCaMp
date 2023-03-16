@@ -4,21 +4,10 @@ const router=express.Router()
 const wrapAsync=require('../utiliti/wrapAsync')
 const expressError = require('../utiliti/expressError')
 
-const {campgroundschema}=require('../validationschema')
 
 const campground = require('../models/campground')
-const {isLoggedIn}=require('../middleware')
+const {isLoggedIn,isauthor,validatecampground}=require('../middleware')
 
-const validatecampground=(req,res,next)=>{//defining express error middleware for campground.
-    const {error}=campgroundschema.validate(req.body)
-    if(error){
-        const msg=error.details.map(e=>e.message).join(',')
-        throw new expressError(msg,400)
-    }
-    else{
-        next()
-    }
-}
 
 router.get('/',wrapAsync(async(req,res)=>{
     const camp=await campground.find({});
@@ -34,6 +23,7 @@ res.render('campgrounds/new')
 router.post('/',validatecampground,isLoggedIn,wrapAsync(async(req,res)=>{
     const c=new campground(req.body.campground)
     c.author=req.user._id//req.user is a object provided by passport that contain obj of user who has logged in.
+
     await c.save()
     req.flash('success',"Campground has been created successfully!!")
     res.redirect(`camps/${c._id}`)
@@ -49,23 +39,26 @@ res.render('campgrounds/detail',{camp})
 
 }))
 
-router.get('/:id/edit',wrapAsync(async(req,res)=>{
+router.get('/:id/edit',isauthor,wrapAsync(async(req,res)=>{
 const camp=await campground.findById(req.params.id);
 if(!camp){//if campground not found we will flash msg and redirect to respective page.
     req.flash('error',"Campground Not Found")
     return res.redirect('/camps')
 }
+
+
 res.render('campgrounds/edit',{camp})
 }))
 
-router.put('/:id',isLoggedIn,validatecampground,wrapAsync(async(req,res)=>{
+router.put('/:id',isLoggedIn,isauthor,validatecampground,wrapAsync(async(req,res)=>{
 const {id}=req.params
 const c=await campground.findByIdAndUpdate(id,{...req.body.campground})
 req.flash('success',"Campground has been updated successfully!!")
-res.redirect(`/camps/${c._id}`)}))
+res.redirect(`/camps/${c._id}`)
+}))
 
-router.delete('/:id',isLoggedIn,wrapAsync(async(req,res)=>{
-const {id}=req.params;
+router.delete('/:id',isLoggedIn,isauthor,wrapAsync(async(req,res)=>{
+const {id}=req.params
 await campground.findByIdAndDelete(id);
 req.flash('success','Campground has been deleted successfully!!')
 res.redirect('/camps')

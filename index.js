@@ -62,7 +62,7 @@ app.use((req,res,next)=>{//declaring global variables, in a middleware remember 
     res.locals.success=req.flash('success')
     res.locals.error=req.flash('error')
     next()
-})//this block of code allow us to use the defined properties in any of the ejs files
+})//this block of code allow us to use the defined properties in any of the ejs files like req.user property which we cannot use in ejs
 
 app.use('/',userroutes)
 app.use('/camps',camproutes)
