@@ -2,25 +2,12 @@ const express=require('express')
 const router=express.Router({mergeParams:true})//express router cannot read the property of camp_id, becouse it is in index.js file, so we'll use 'mergeParams'
 
 const wrapAsync=require('../utiliti/wrapAsync')
-const expressError = require('../utiliti/expressError')
 
 const campground = require('../models/campground')
 const review = require('../models/review')
+const {validatereview}=require('../middleware')
 
-const {reviewschema}=require('../validationschema')
 
-
-const validatereview=(req,res,next)=>{//defining express error middleware for review.
-    const {error}=reviewschema.validate(req.body)
-    if(error){
-        
-        const msg=error.details.map(e=>e.message).join(',')
-        throw new expressError(msg,400)
-    }
-    else{
-        next()
-    }
-}
 
 router.post('/',validatereview,wrapAsync(async(req,res)=>{
     const {id}=req.params

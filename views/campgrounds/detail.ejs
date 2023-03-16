@@ -16,10 +16,10 @@
               
             </ul>
             <div class="card-body ">
-              <% if(loggeduser && camp.author === loggeduser._id){ %>
+              <% if(loggeduser && camp.author.equals(loggeduser._id)){ %>
               <div class="d-inline">
                 <a class="btn btn-info" href="/camps/<%= camp._id %>/edit " class="card-link">Edit page</a>
-                <p><form action="/camps/<%= camp._id %>?_method=delete " method="post">
+                <p><form action="/camps/<%= camp._id %>?_method=delete" method="post">
                       <button class="btn btn-info">Delete</button>
                 </form></p>
               </div>

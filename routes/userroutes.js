@@ -2,6 +2,7 @@ const express=require('express')
 const passport = require('passport')
 const router=express.Router()
 const user=require('../models//user')
+const wrapAsync = require('../utiliti/wrapAsync')
 const Wrapasync=require('../utiliti/wrapAsync')
 
 router.get('/register',(req,res)=>{
@@ -34,13 +35,20 @@ router.post('/login',passport.authenticate('local',{failureFlash:true,failureRed
     const url=req.session.returnTo || '/camps'
     res.redirect(url)
 })
-
-router.get('/logout', (req, res, next) => {
+/*
+router.get('/logout',async (req, res, next) => {
     req.logout(function(err) {
       if (err) { return next(err); }
       req.flash('success', "Goodbye!");
       res.redirect('/camps');
     });
   });
+*/
+  router.get("/logout", (req, res) => {
+    req.logout(wrapAsync);
+    req.flash("success", "Goodbye!");
+    res.redirect("/camps");
+});
+  
 
 module.exports=router
