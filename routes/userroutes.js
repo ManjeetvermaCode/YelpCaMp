@@ -3,13 +3,12 @@ const passport = require('passport')
 const router=express.Router()
 const user=require('../models//user')
 const wrapAsync = require('../utiliti/wrapAsync')
-const Wrapasync=require('../utiliti/wrapAsync')
 
 router.get('/register',(req,res)=>{
     res.render('users/register')
 })
 
-router.post('/register',Wrapasync(async(req,res,next)=>{
+router.post('/register',wrapAsync(async(req,res,next)=>{
     try{
         const {username,email,password}=req.body
         const registeruser=new user({username,email})//creating new user model
