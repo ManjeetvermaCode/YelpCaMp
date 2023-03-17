@@ -22,15 +22,15 @@ res.render('campgrounds/new')
 
 router.post('/',validatecampground,isLoggedIn,wrapAsync(async(req,res)=>{
     const c=new campground(req.body.campground)
-    c.author=req.user._id//req.user is a object provided by passport that contain obj of user who has logged in.
+    c.author=req.user._id//setting campground author to req.user._id when a new campground is created.req.user is a object provided by passport that contain obj of user who has logged in.
 
     await c.save()
     req.flash('success',"Campground has been created successfully!!")
     res.redirect(`camps/${c._id}`)
 }))
 
-router.get('/:id',isLoggedIn,wrapAsync(async(req,res)=>{
-const camp=await campground.findById(req.params.id).populate('review').populate('author');
+router.get('/:id',wrapAsync(async(req,res)=>{
+    const camp = await campground.findById(req.params.id).populate({ path: 'review', populate: { path: 'author' } }).populate('author');
 if(!camp){
     req.flash('error',"Campground Not Found")
     return res.redirect('/camps')
