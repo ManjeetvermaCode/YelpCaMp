@@ -17,7 +17,4 @@ router.route('/:id')
 
 router.get('/:id/edit',isauthor,wrapAsync(campground2.RenderEditPage))
 
-
-
-
 module.exports=router
