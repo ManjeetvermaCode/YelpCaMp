@@ -1,3 +1,10 @@
+//step-2:install dotenv
+if(process.env.NODE_ENV !== 'production'){//step3:if app in developement mode
+    require('dotenv').config()//grabing our data out of .env file
+}//by doing this we can access our credentials, but someone viewing our code cannot view credentials.
+
+console.log(process.env.SECRET)
+
 const express=require('express')
 const router=express.Router()
 const wrapAsync=require('../utiliti/wrapAsync')
