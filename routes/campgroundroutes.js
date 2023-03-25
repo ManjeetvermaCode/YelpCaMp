@@ -3,21 +3,23 @@ if(process.env.NODE_ENV !== 'production'){//step3:if app in developement mode
     require('dotenv').config()//grabing our data out of .env file
 }//by doing this we can access our credentials, but someone viewing our code cannot view credentials.
 
-console.log(process.env.SECRET)
-
 const express=require('express')
 const router=express.Router()
 const wrapAsync=require('../utiliti/wrapAsync')
 const campground2=require('../controller/campground')
 const {isLoggedIn,isauthor,validatecampground}=require('../middleware')
+
 const multer=require('multer')
-const upload=multer({desc:'uploads/'})
+const {storage}=require('../cloudinaryconfig')
+const upload=multer({storage})
+
 
 router.route('/')
     .get(wrapAsync(campground2.index))
     //.post(validatecampground,isLoggedIn,wrapAsync(campground2.CreateNewCamp))
-    .post(upload.array('image',2),(req,res)=>{
-        console.log(req.body,req.files)
+    .post(upload.array('image',3),(req,res)=>{
+        //console.log(req.body,req.file)
+        res.send('it is working')
     })
 
 router.get('/new',isLoggedIn,campground2.RenderNewForm)
