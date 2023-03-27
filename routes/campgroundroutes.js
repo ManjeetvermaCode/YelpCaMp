@@ -17,7 +17,7 @@ const upload=multer({storage})
 router.route('/')
     .get(wrapAsync(campground2.index))
     //.post(validatecampground,isLoggedIn,wrapAsync(campground2.CreateNewCamp))
-    .post(upload.array('image',3),(req,res)=>{
+    .post(upload.array('image'),(req,res)=>{
         //console.log(req.body,req.file)
         res.send('it is working')
     })
