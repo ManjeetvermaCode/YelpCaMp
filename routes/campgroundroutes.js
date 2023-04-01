@@ -1,9 +1,3 @@
-if(process.env.NODE_ENV !== 'production'){
-    require('dotenv').config()
-}
-console.log(process.env.SECRET)
-
-
 const express=require('express')
 const router=express.Router()
 const wrapAsync=require('../utiliti/wrapAsync')
@@ -11,13 +5,15 @@ const campground2=require('../controller/campground')
 const {isLoggedIn,isauthor,validatecampground}=require('../middleware')
 
 const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+const {storage}=require('../cloudinary')
+const upload = multer({ storage })
 
 
 router.route('/')
     .get(wrapAsync(campground2.index))
     //.post(validatecampground,isLoggedIn,wrapAsync(campground2.CreateNewCamp))
-    .post((req,res)=>{
+    .post(upload.single('image'),(req,res)=>{
+        console.log(req.body,req.file)
    res.send('it worked')
     })
 
